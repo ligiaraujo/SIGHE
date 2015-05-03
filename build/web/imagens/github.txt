@@ -1,0 +1,6 @@
+baixar git e github
+criar repositório com readme marcado
+add gitignore: Java
+add license: GNU GLP 3.0 
+http://rogerdudler.github.io/git-guide/index.pt_BR.html Link ensinando os códigos do git
+Sua dupla vai usar o fork do projeto para enviar códigos para você implementar
