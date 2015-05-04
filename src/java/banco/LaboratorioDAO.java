@@ -15,21 +15,25 @@ import java.sql.Statement;
  * @author Wisley
  */
 public class LaboratorioDAO {
-          private Connection conn;
+    
+    private Connection conn;
 
     public LaboratorioDAO () {
         this.conn = new Banco().getConn();
     }
 
-    public Laboratorio Inserir(Laboratorio cadastrar) throws SQLException {
-        String sql = "INSERT INTO laboratorio (nome, matricula, tipoLaboratorio, horario) VALUES ( ?, ?, ?, ?);";
+    public void Inserir(Laboratorio cadastrar) throws SQLException {
+        String sql = "INSERT INTO laboratorio (matriculaAluno, matriculaProfessor, laboratorio, aprovacao, horario, data, turno) VALUES (?, ?, ?, ?, ?, ?, ?);";
         int idLaboratorio = 0;
         try {
             java.sql.PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            stmt.setString(1, cadastrar.getNome());
-            stmt.setString(2, cadastrar.getMatricula());
-            stmt.setString(3, cadastrar.getTipoLaboratorio());
-            stmt.setString(4, cadastrar.getHorario());
+            stmt.setString(1, cadastrar.getMatriculaAluno());
+            stmt.setString(2, cadastrar.getMatriculaProfessor());
+            stmt.setString(3, cadastrar.getLaboratorio());
+            stmt.setString(4, cadastrar.getAprovacao());
+            stmt.setString(5, cadastrar.getHorario());
+            stmt.setString(6, cadastrar.getData());
+            stmt.setString(7, cadastrar.getTurno());
             stmt.execute();
             ResultSet rs = stmt.getGeneratedKeys();
             rs.next();
@@ -38,7 +42,6 @@ public class LaboratorioDAO {
             rs.close();
             stmt.close();
             conn.close();
-            return cadastrar;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

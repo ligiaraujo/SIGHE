@@ -14,35 +14,34 @@ import java.sql.Statement;
  *
  * @author Wisley
  */
-public class ReservaEsporteDAO {
-      private Connection conn;
+public class ConsultaDAO {
+       private Connection conn;
 
-    public ReservaEsporteDAO() {
+    public ConsultaDAO () {
         this.conn = new Banco().getConn();
     }
-   public ReservaEsporte Inserir(ReservaEsporte cadastrar) throws SQLException {
-        String sql = "insert into esporte (nome, matricula, horario, tipoEsporte, qtdBolas, turno) values ( ?, ?, ?, ?, ?, ?);";
-        int idEsporte = 0;
+
+    public void Inserir(Consulta cadastrar) throws SQLException {
+        String sql = "INSERT INTO consulta (matricula, medico, hora, data) VALUES (?, ?, ?, ?);";
+        int idCons = 0;
         try {
             java.sql.PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            stmt.setString(1, cadastrar.getNome());
-            stmt.setString(2, cadastrar.getMatricula());
-            stmt.setString(3, cadastrar.getHorario());
-            stmt.setString(4, cadastrar.getTipoEsporte());
-            stmt.setString(5, cadastrar.getQtdBolas());
-            stmt.setString(6, cadastrar.getTurno());
-            
+            stmt.setString(1, cadastrar.getMatricula());
+            stmt.setString(2, cadastrar.getMedico());
+            stmt.setString(3, cadastrar.getHora());
+            stmt.setString(4, cadastrar.getData());
             stmt.execute();
             ResultSet rs = stmt.getGeneratedKeys();
             rs.next();
-            idEsporte = rs.getInt(1);
+            idCons = rs.getInt(1);
 
             rs.close();
             stmt.close();
             conn.close();
-            return cadastrar;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 }
+
+    

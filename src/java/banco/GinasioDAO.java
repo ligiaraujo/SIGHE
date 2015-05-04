@@ -14,36 +14,35 @@ import java.sql.Statement;
  *
  * @author Wisley
  */
-public class ConsultaMedicaDAO {
-       private Connection conn;
+public class GinasioDAO {
 
-    public ConsultaMedicaDAO () {
+    private Connection conn;
+
+    public GinasioDAO() {
         this.conn = new Banco().getConn();
     }
 
-    public ConsultaMedica Inserir(ConsultaMedica cadastrar) throws SQLException {
-        String sql = "INSERT INTO constmed (nome, matricula, curso, espMed, horario) VALUES ( ?, ?, ?, ?, ?);";
-        int idCons = 0;
+    public void Inserir(Ginasio cadastrar) throws SQLException {
+        String sql = "insert into ginasio (matricula, tipoEsporte, qtdBolas, horario, data) values (?, ?, ?, ?, ?);";
+        int idEsporte = 0;
         try {
             java.sql.PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            stmt.setString(1, cadastrar.getNome());
-            stmt.setString(2, cadastrar.getMatricula());
-            stmt.setString(3, cadastrar.getCurso());
-            stmt.setString(4, cadastrar.getEspMed());
-            stmt.setString(5, cadastrar.getHorario());
+            stmt.setString(1, cadastrar.getMatricula());
+            stmt.setString(2, cadastrar.getTipoEsporte());
+            stmt.setString(3, cadastrar.getQtdBolas());
+            stmt.setString(4, cadastrar.getHorario());
+            stmt.setString(5, cadastrar.getData());
+
             stmt.execute();
             ResultSet rs = stmt.getGeneratedKeys();
             rs.next();
-            idCons = rs.getInt(1);
+            idEsporte = rs.getInt(1);
 
             rs.close();
             stmt.close();
             conn.close();
-            return cadastrar;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 }
-
-    
