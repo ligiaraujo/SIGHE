@@ -1,4 +1,3 @@
-@import url(http://fonts.googleapis.com/css?family=Oswald);
 #cssmenu,
 #cssmenu ul,
 #cssmenu ul li,
@@ -14,6 +13,8 @@
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+  font-weight:bold;
+      color: green;
 }
 #cssmenu:after,
 #cssmenu > ul:after {
@@ -28,10 +29,12 @@
   display: none;
 }
 #cssmenu {
-  width: 100%;
+    margin-top: 40px;
+  width: 60%;
   border: 3px solid green;
-  border-radius: 3px;
-  font-family: 'Oswald', sans-serif;
+  border-radius: 6px;
+ text-align: center;
+ // font-family: AR JULIAN;
   line-height: 1;
   background: #f7f7f7;
   box-shadow: 1px 1px 0 green, 2px 2px 0 green, 3px 3px 3px rgba(0, 0, 0, 0.35);
@@ -54,7 +57,7 @@
   float: right;
 }
 #cssmenu > ul > li > a {
-  padding: 20px 25px;
+  padding: 20px 25px 25px 25px;
   font-size: 14px;
   text-transform: uppercase;
   text-decoration: none;
@@ -90,7 +93,7 @@
 #cssmenu.small-screen > ul,
 #cssmenu.small-screen.align-center > ul {
   width: 100%;
-  text-align: left;
+  text-align: center;
 }
 #cssmenu.small-screen > ul > li,
 #cssmenu.small-screen.align-center > ul > li {
@@ -109,8 +112,9 @@
   display: block;
   padding: 18px 25px;
   cursor: pointer;
+    text-align: center;
   font-size: 44px;
-  text-transform: uppercase;
+  text-transform: lowercase;
   text-decoration: none;
   color: green;
   background: url('images/bg.png');
