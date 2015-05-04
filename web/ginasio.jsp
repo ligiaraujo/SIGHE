@@ -1,19 +1,18 @@
 <%-- 
-    Document   : refeicao
+    Document   : ginasio
     Created on : 02/02/2015, 20:04:49
     Author     : Wisley
 --%>
+
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.Date"%>
-<%@page import="java.sql.DriverManager"%>
-<%@page import="javax.swing.text.Document"%>
 <%@page import="banco.*"%>
 <%@page contentType="text/html" pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
     <head>
         <link rel="shortcut icon" href="imagens/ico.png"/>
-        <title> SIGHE - REFEIÇÃO </title>
+        <title> SIGHE - GINÁSIO </title>
         <meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1">
         <link rel="stylesheet" type="text/css" href="css/MasterPage.css"/>
         <link rel="stylesheet" type="text/css" href="css/Menu.css"/>
@@ -44,48 +43,73 @@
             </ul>
             <p style="padding-right: 20px; text-align: right;"><%=usuLogado.getString("nome")%> (<%=usuLogado.getString("tipo")%>)</p>
         </div>
-
+        
         <div id='corpo'>   
-            <h1> RESERVAR REFEIÇÃO </h1>
+            <h1> RESERVAR GINÁSIO </h1>
             <%
                 String rv = request.getParameter("reservar");
                 if (rv == null) {
             %>
-            <form action="refeicao.jsp" method="post">
-                <fieldset>
-                    <legend>Preencha o formulário abaixo</legend>
+            <form action="ginasio.jsp" method="post">
+                <fieldset class="login">
+
+                    <legend> Preencha o formulário abaixo</legend>
                     <br>
                     <label>Data: </label>
                     <input type="date" name="data" id="data" required="">
-                    <br><br> 
-                    <label> Tipo de refeição: </label>
-                    <input type="radio" name="tipo" value="Almoço" checked/>Almoço
-                    <input type="radio" name="tipo" value="Jantar"/>Janta                    
-                    <br><br> 
-                    <label> Justifivativa </label> <br>
-                    <textarea name="justificativa" cols="50" rows="5" > </textarea>
+                    <br><br>
+                    <script type="text/javascript" src="js/jquery-1.2.6.pack.js">
+                    </script>
+
+                    <script type="text/javascript" src="js/jquery.maskedinput-1.1.4.pack.js"/>
+                    </script>
+
+                    <script type="text/javascript">$(document).ready(function () {
+                            $("#hora").mask("99h99");
+                        });
+                    </script>
+                    <script type="text/javascript">$(document).ready(function () {
+                            $("#hora1").mask("99h99");
+                        });
+                    </script>
+
+                    <label> Horário das: </label> 
+                    <input id="hora" type="text" name="horario1" size="5" required/> 
+                    <label> ás: </label>
+                    <input id="hora1" type="text" name="horario2"  size="5" required/> *Máx. de 1h!
                     <br><br>
 
+                    <label> Prática esportiva: </label>
+                    <select name="tipoEsporte" required/>
+                    <option>Futsal</option>
+                    <option>Handball</option>
+                    <option>Vôlei</option>
+                    <option>Basquete</option>
+                    </select>
+                    <br><br>
+                    <label> Quantidade de bolas: </label>
+                    <input type="number" name="qtdBolas" min="1" max="2" required/> *Máx. 2!
+                    <br><br>
                     <input type="submit" class="sub" name="reservar" value="Reservar">
-                    <input type="reset" class="sub" value="Limpar">	                     
+                    <input type="reset" class="sub" value="Limpar">
                     <br>
                 </fieldset>
             </form>
-            <%
-            } else {
-                Refeicao refeicao = new Refeicao();
+            <%} else {
+                Ginasio ginasio = new Ginasio();
 
-                refeicao.setMatricula(usuLogado.getString("matricula"));
-                refeicao.setData(request.getParameter("data"));
-                refeicao.setTipo(request.getParameter("tipo"));
-                refeicao.setJustificativa(request.getParameter("justificativa"));
+                ginasio.setMatricula(usuLogado.getString("matricula"));
+                ginasio.setTipoEsporte(request.getParameter("tipoEsporte"));
+                ginasio.setQtdBolas(request.getParameter("qtdBolas"));
+                ginasio.setData(request.getParameter("data"));
+                ginasio.setHorario(request.getParameter("horario1") + " às " + request.getParameter("horario2"));
 
-                RefeicaoDAO refeicaoDAO = new RefeicaoDAO();
+                GinasioDAO ginasioDAO = new GinasioDAO();
 
-                refeicaoDAO.Inserir(refeicao);
+                ginasioDAO.Inserir(ginasio);
             %>
             <fieldset class="login1">
-                <p style="text-align: center">AGENDAMENTO FEITO COM SUCESSO.<br/><br/>
+                <p style="text-align: center">RESERVA FEITA COM SUCESSO. <br/><br/>
                     <a class="ap" href="inicio.jsp">Início</a></p>
             </fieldset>
             <%}%>
@@ -103,7 +127,3 @@
     </div>
 </body>
 </html>
-
-
-
-
