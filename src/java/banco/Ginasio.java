@@ -9,14 +9,15 @@ package banco;
  *
  * @author Wisley
  */
-public class ReservaEsporte  { 
+public class Ginasio {
 
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
+    public Ginasio() {
+        this.matricula = "";
+        this.horario = "";
+        this.data = "";
+        this.tipoEsporte = "";
+        this.qtdBolas = "";
+        this.idGinasio = "";
     }
 
     public String getMatricula() {
@@ -35,6 +36,14 @@ public class ReservaEsporte  {
         this.horario = horario;
     }
 
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+    
     public String getTipoEsporte() {
         return tipoEsporte;
     }
@@ -51,28 +60,19 @@ public class ReservaEsporte  {
         this.qtdBolas = qtdBolas;
     }
 
-    public String getTurno() {
-        return turno;
+    public String getIdGinasio() {
+        return idGinasio;
     }
 
-    public void setTurno(String turno) {
-        this.turno = turno;
+    public void setIdGinasio(String idGinasio) {
+        this.idGinasio = idGinasio;
     }
-
-    public ReservaEsporte(String nome, String matricula, String horario, String tipoEsporte, String qtdBolas , String turno) {
-    this.nome=nome;
-    this.matricula=matricula;
-    this.horario=horario;
-    this.tipoEsporte=tipoEsporte;
-    this.qtdBolas=qtdBolas;
-    this.turno=turno;
-    }
-    String nome;
-    String matricula;
-    String horario;
-    String tipoEsporte;
-    String qtdBolas;
-    String turno;
     
-}
+    private String matricula;
+    private String horario;
+    private String data;
+    private String tipoEsporte;
+    private String qtdBolas;
+    private String idGinasio;
 
+}

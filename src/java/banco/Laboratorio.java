@@ -11,28 +11,55 @@ package banco;
  */
 public class Laboratorio {
 
-    public String getNome() {
-        return nome;
+    public Laboratorio() {
+        this.idLaboratorio = "";
+        this.matriculaAluno = "";
+        this.matriculaProfessor = "";
+        this.aprovacao = "";
+        this.laboratorio = "";
+        this.horario = "";
+        this.turno = "";
+        this.data = "";
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public String getIdLaboratorio() {
+        return idLaboratorio;
     }
 
-    public String getMatricula() {
-        return matricula;
+    public void setIdLaboratorio(String idLaboratorio) {
+        this.idLaboratorio = idLaboratorio;
     }
 
-    public void setMatricula(String matricula) {
-        this.matricula = matricula;
+    public String getMatriculaAluno() {
+        return matriculaAluno;
     }
 
-    public String getTipoLaboratorio() {
-        return tipoLaboratorio;
+    public void setMatriculaAluno(String matriculaAluno) {
+        this.matriculaAluno = matriculaAluno;
     }
 
-    public void setTipoLaboratorio(String tipoLaboratorio) {
-        this.tipoLaboratorio = tipoLaboratorio;
+    public String getMatriculaProfessor() {
+        return matriculaProfessor;
+    }
+
+    public void setMatriculaProfessor(String matriculaProfessor) {
+        this.matriculaProfessor = matriculaProfessor;
+    }
+
+    public String getAprovacao() {
+        return aprovacao;
+    }
+
+    public void setAprovacao(String aprovacao) {
+        this.aprovacao = aprovacao;
+    }
+
+    public String getLaboratorio() {
+        return laboratorio;
+    }
+
+    public void setLaboratorio(String laboratorio) {
+        this.laboratorio = laboratorio;
     }
 
     public String getHorario() {
@@ -42,16 +69,30 @@ public class Laboratorio {
     public void setHorario(String horario) {
         this.horario = horario;
     }
-    
-    public Laboratorio (String nome, String matricula, String tipoLaboratorio, String horario) {
-        this.nome = nome;
-        this.matricula=matricula;
-        this.tipoLaboratorio=tipoLaboratorio;
-        this.horario=horario;
-        
+
+    public String getTurno() {
+        return turno;
     }
-    String nome;
-    String matricula;
-    String tipoLaboratorio;
-    String horario;
+
+    public void setTurno(String turno) {
+        this.turno = turno;
+    }
+
+    
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+    
+    private String idLaboratorio;
+    private String matriculaAluno;
+    private String matriculaProfessor;
+    private String aprovacao;
+    private String laboratorio;
+    private String horario;
+    private String turno;
+    private String data;
 }
