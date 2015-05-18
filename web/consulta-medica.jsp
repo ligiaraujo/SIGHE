@@ -72,7 +72,7 @@
                     <br><br>
                     <label> Médico: </label>
                     <select name="medico">
-                        <option>Médico Clínico Geral</option>
+                        <option>Clínico Geral</option>
                         <option>Psicólogo</option>
                         <option>Dentista</option>
                     </select>
@@ -87,11 +87,12 @@
                 consulta.setMatricula(usuLogado.getString("matricula"));
                 consulta.setMedico(request.getParameter("medico"));
                 consulta.setHora(request.getParameter("hora"));
-                consulta.setData(request.getParameter("data"));
+
+                String data = request.getParameter("data");
 
                 ConsultaDAO consultaDAO = new ConsultaDAO();
 
-                consultaDAO.Inserir(consulta);
+                consultaDAO.Inserir(consulta, data);
             %>
             <fieldset class="login1">
                 <p style="text-align: center">AGENDAMENTO FEITO COM SUCESSO. <br/><br/>

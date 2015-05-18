@@ -4,6 +4,8 @@
     Author     : Wisley
 --%>
 
+<%@page import="java.text.DateFormat"%>
+<%@page import="java.sql.Date"%>
 <%@page import="java.sql.DriverManager"%>
 <%@page import="javax.swing.text.Document"%>
 <%@page import="java.sql.ResultSet"%>
@@ -85,14 +87,19 @@
                     </select>
                     <br><br>
                     <label> Professor responsável: </label>
+                    <% if (usuLogado.getString("tipo").equals("Professor")) {%>
+                    <input type="text" value="<%=usuLogado.getString("nome")%>" readonly="">                  
+                    <input type="hidden" name="professor" value="<%=usuLogado.getString("matricula")%>">                  
+                    <% } else {%>
                     <select name="professor">
                         <%
                             ResultSet prof = usuDAO.selecionarProfessores();
                             while (prof.next()) {
                         %>
                         <option value="<%=prof.getString("matricula")%>"><%=prof.getString("nome")%></option>
-                        <%}%>
+                        <% } %>
                     </select>
+                    <% } %>
                     <br><br>
                     <input type="submit" class="sub" name="reservar" value="Reservar">
                     <input type="reset" class="sub" value="Limpar">
@@ -104,11 +111,13 @@
 
                 laboratorio.setMatriculaAluno(usuLogado.getString("matricula"));
                 laboratorio.setMatriculaProfessor(request.getParameter("professor"));
-                laboratorio.setAprovacao("-");
+                if (usuLogado.getString("tipo").equals("Professor")) {
+                    laboratorio.setAprovacao("Aprovado");
+                } else {
+                    laboratorio.setAprovacao("-");
+                }
                 laboratorio.setLaboratorio(request.getParameter("laboratorio"));
-                laboratorio.setData(request.getParameter("data"));
                 laboratorio.setTurno(request.getParameter("turno"));
-
                 String horarios[] = request.getParameterValues("horario");
                 String horario = "";
                 if (horarios != null) {
@@ -119,10 +128,14 @@
                     horario = horario.substring(0, horario.length() - 2);
                 }
                 laboratorio.setHorario(horario);
-                
+
+                // DateFormat df = DateFormat.getDateInstance();		
+                //Date data = (Date) request.getParameter("data");
+                //laboratorio.setData(data);
+                String dataString = request.getParameter("data");
                 LaboratorioDAO laboratorioDAO = new LaboratorioDAO();
 
-                laboratorioDAO.Inserir(laboratorio);
+                laboratorioDAO.Inserir(laboratorio, dataString);
             %>
             <fieldset class="login1">
                 <p style="text-align: center">RESERVA FEITA COM SUCESSO.<br/><br/>

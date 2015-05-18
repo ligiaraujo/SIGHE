@@ -43,7 +43,7 @@
             </ul>
             <p style="padding-right: 20px; text-align: right;"><%=usuLogado.getString("nome")%> (<%=usuLogado.getString("tipo")%>)</p>
         </div>
-        
+
         <div id='corpo'>   
             <h1> RESERVAR GINÁSIO </h1>
             <%
@@ -85,10 +85,11 @@
                     <option>Handball</option>
                     <option>Vôlei</option>
                     <option>Basquete</option>
+                    <option>Extra Sala</option>
                     </select>
                     <br><br>
                     <label> Quantidade de bolas: </label>
-                    <input type="number" name="qtdBolas" min="1" max="2" required/> *Máx. 2!
+                    <input type="number" name="qtdBolas" min="1" max="4" required/> *Máx. 4!
                     <br><br>
                     <input type="submit" class="sub" name="reservar" value="Reservar">
                     <input type="reset" class="sub" value="Limpar">
@@ -101,12 +102,12 @@
                 ginasio.setMatricula(usuLogado.getString("matricula"));
                 ginasio.setTipoEsporte(request.getParameter("tipoEsporte"));
                 ginasio.setQtdBolas(request.getParameter("qtdBolas"));
-                ginasio.setData(request.getParameter("data"));
                 ginasio.setHorario(request.getParameter("horario1") + " às " + request.getParameter("horario2"));
+                String dataString = request.getParameter("data");
 
                 GinasioDAO ginasioDAO = new GinasioDAO();
 
-                ginasioDAO.Inserir(ginasio);
+                ginasioDAO.Inserir(ginasio, dataString);
             %>
             <fieldset class="login1">
                 <p style="text-align: center">RESERVA FEITA COM SUCESSO. <br/><br/>
