@@ -1,2 +1,0 @@
-# ignore todos os arquivos no diretório build/
-build/

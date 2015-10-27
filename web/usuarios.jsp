@@ -1,14 +1,14 @@
 
+<%@page import="java.sql.DriverManager"%>
+<%@page import="javax.swing.text.Document"%>
 <%-- 
     Document   : usuarios
     Created on : 02/02/2015, 20:04:49
     Author     : Wisley
 --%>
-
-<%@page import="java.sql.DriverManager"%>
-<%@page import="javax.swing.text.Document"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.Date"%>
+
 <%@page import="banco.Banco"%>
 <%@page import="banco.Usuario"%>
 <%@page import="banco.UsuarioDAO"%>
@@ -44,13 +44,6 @@
                 return false;
             }
         }
-        function abrir(URL) {
-            var width = 600;
-            var height = 300;
-            var left = 100;
-            var top = 100;
-            window.open(URL, 'janela', 'width=' + width + ', height=' + height + ', top=' + top + ', left=' + left + ', scrollbars=yes, status=no, toolbar=no, location=no, directories=no, menubar=no, resizable=no, fullscreen=no');
-        }
     </script>
 </head>
 <body>
@@ -75,21 +68,10 @@
             <li><a href="horarios.jsp"> Horários </a></li>
             <li><a href='logar.jsp?acao=sair'> Sair </a></li>
         </ul>
-        <%
-            if (usuLogado.getString("tipo").equals("Funcionário")) {
-        %>
-        <p style="padding-right: 20px; text-align: right;"><%=usuLogado.getString("nome")%> (<%=usuLogado.getString("funcao")%>)</p>
-        <%
-        } else {
-        %>
         <p style="padding-right: 20px; text-align: right;"><%=usuLogado.getString("nome")%> (<%=usuLogado.getString("tipo")%>)</p>
-        <%
-            }
-        %>
     </div>
 
     <div id='corpo'>
-        <% if (usuLogado.getString("funcao").equals("Administrador")) { %>
         <form action="usuarios.jsp" id="formOpcao" method="post">
             <label>Escolha um tipo de usuário: </label>
             <input type="radio" name="opcao" value="Aluno" onchange="submeter()">Aluno
@@ -257,11 +239,20 @@
         <hr>
         <br>
         <form action="usuarios.jsp" id="formFiltro" method="post">
+            <%if (opcao.equals("Funcionário")) {%>
             <%if (filtro == null) { %>
             <input type="text" name="filtro" placeholder="Filtrar por nome, matrícula ou função" style="width: 300px;" onkeypress="submeterFiltro()">
             <%} else {%>
             <input type="text" name="filtro" value="<%=filtro%>" placeholder="Filtrar por nome, matrícula ou setor" style="width: 300px;" onkeypress="submeterFiltro()">
-            <%}%>
+            <%}
+            } else {%> 
+
+            <%if (filtro == null) { %>
+            <input type="text" name="filtro" placeholder="Filtrar por nome, matrícula ou curso" style="width: 300px;" onkeypress="submeterFiltro()">
+            <%} else {%>
+            <input type="text" name="filtro" value="<%=filtro%>" placeholder="Filtrar por nome, matrícula ou curso" style="width: 300px;" onkeypress="submeterFiltro()">
+            <%}
+                }%>
             <input type="hidden" name="opcao" value="<%=opcao%>">
             <input type="submit" value="Filtrar" class="sub">
         </form>
@@ -286,10 +277,12 @@
                     lista = usuarioDAO.filtrarFuncionarios(filtro);
                 }
             }
+
+            if (usuLogado.getString("funcao").equals("Administrador")) {
         %>
-        <table class="tbl">
+        <table id="tbUsers1">
             <tr>
-                <th>Matrícula</th>
+                <th style="width: 160px;">Matrícula</th>
                 <th>Nome</th>
                     <%if (opcao.equals("Funcionário")) {%>
                 <th>Função</th>
@@ -298,9 +291,8 @@
                     <%}%>               
                 <th>E-mail</th>
                 <th>Telefone</th>
-                <th style="width: auto">Senha</th>
-                <th style="width: auto">Editar</th>
-                <th style="width: auto">Excluir</th>
+                <th style="padding-left: 10px; padding-right: 10px;">Editar</th>
+                <th style="padding-left: 10px; padding-right: 10px;">Excluir</th>
             </tr> 
             <%
                 int k = 0;
@@ -342,21 +334,44 @@
                     <script type="text/javascript">$(document).ready(function () {
                             $("#tel<%=k%>").mask("(99) 9999-9999");
                         });</script>
-                </td>               
-                <td style="text-align: center"><input type="button" value="Alterar" class="sub" onclick="abrir('alterar_senha.jsp?id=<%=lista.getString("idUsuario")%>')"></td>
+                </td>
                 <td style="text-align: center"><input type="submit" name="acao" value="Editar" class="sub"></td>
                 <td style="text-align: center"><input type="submit" name="acao" value="Excluir" class="sub"></td>           
                 </tr>
             </form>
             <%}%>
         </table>
-
+        <%} else {%>
+        <table id="tbUsers2">
+            <tr>
+                <th>Matrícula</th>
+                <th>Nome</th>
+                    <%if (opcao.equals("Funcionário")) {%>
+                <th>Função</th>
+                    <%} else {%>                         
+                <th>Curso</th>
+                    <%}%>               
+                <th>E-mail</th>
+                <th>Telefone</th>
+            </tr> 
+            <%   while (lista.next()) {%>
+            <tr>  
+                <td><%=lista.getString("matricula")%></td>
+                <td><%=lista.getString("nome")%></td>
+                <%if (opcao.equals("Funcionário")) {%>
+                <td><%=lista.getString("funcao")%></td>
+                <%} else {%>                         
+                <td><%=lista.getString("curso")%></td>
+                <%}%>
+                <td><%=lista.getString("email")%></td>
+                <td><%=lista.getString("telefone")%></td>          
+            </tr>
+            <%}%>
+        </table>
+        <%}%>
         <%
-            } catch (NullPointerException e) {
-            }
-        } else {%>
-        PÁGINA DISPONÍVEL APENAS PARA O ADMINISTADOR.
-        <%}
+                    } catch (NullPointerException e) {
+                    }
                 }
             }
         %> 

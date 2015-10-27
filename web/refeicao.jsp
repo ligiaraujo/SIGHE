@@ -3,7 +3,6 @@
     Created on : 02/02/2015, 20:04:49
     Author     : Wisley
 --%>
-<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.Date"%>
 <%@page import="java.sql.DriverManager"%>
@@ -49,51 +48,19 @@
         <div id='corpo'>   
             <h1> RESERVAR REFEIÇÃO </h1>
             <%
-                Date data = new Date(System.currentTimeMillis());
-                SimpleDateFormat formatarDate = new SimpleDateFormat("u"); //nunmero do dia da semana
-                //1 - segunda, 2 - terça, 3 - quarta 
-                //4 - quinta, 5 - sexta, 6 - sabado, 7 domingo
-                SimpleDateFormat formatarDateDia = new SimpleDateFormat("EEEEEE");
-
-                if (Integer.parseInt(formatarDate.format(data)) == 6) {
-            %>
-            HOJE É SÁBADO, SEM EXPEDIENTE!
-            <%
-            } else if (Integer.parseInt(formatarDate.format(data)) == 7) {
-            %>  
-            HOJE É DOMINGO, SEM EXPEDIENTE!
-            <%
-            } else {
-                RefeicaoDAO refeicaoDAO = new RefeicaoDAO();
-                int countAlmoco = refeicaoDAO.countPreenchido(data.toString(), "Almoço");
-                int countJanta = refeicaoDAO.countPreenchido(data.toString(), "Janta");
-            %>
-            <table>
-                <tr>
-                    <td><div style="font-size: 13pt; margin-left: 60px;"> Almoço</div></td>
-                    <td><div style="font-size: 13pt; margin-left: 60px;"> Janta</div></td>
-                </tr>
-                <tr> 
-                    <td style="padding-left: 20px"><div style="text-align:left;"><div id="divSol">20</div><div style="font-size: 12pt; margin-left: 60px;">Vagas</div></div></td>
-                    <td style="padding-left: 20px"><div style="text-align:left;"><div id="divSol">15</div><div style="font-size: 12pt; margin-left: 60px;">Vagas</div></div></td>
-                </tr>
-                <tr> 
-                    <td style="padding-left: 20px"><div style="text-align:left;"><div id="divSol"> <%= countAlmoco%></div><div style="font-size: 12pt; margin-left: 60px;">Preenchidas</div></div></td>
-                    <td style="padding-left: 20px"><div style="text-align:left;"><div id="divSol"><%= countJanta %></div><div style="font-size: 12pt; margin-left: 60px;">Preenchidas</div></div></td>
-                </tr>
-            </table>
-            <br>
-            <%
                 String rv = request.getParameter("reservar");
                 if (rv == null) {
-            %> 
+            %>
             <form action="refeicao.jsp" method="post">
                 <fieldset>
-                    <legend>Reserve uma refeição para hoje (<%=formatarDateDia.format(data)%>)</legend>
+                    <legend>Preencha o formulário abaixo</legend>
                     <br>
+                    <label>Data: </label>
+                    <input type="date" name="data" id="data" required="">
+                    <br><br> 
                     <label> Tipo de refeição: </label>
                     <input type="radio" name="tipo" value="Almoço" checked/>Almoço
-                    <input type="radio" name="tipo" value="Janta"/>Janta                    
+                    <input type="radio" name="tipo" value="Jantar"/>Janta                    
                     <br><br> 
                     <label> Justifivativa </label> <br>
                     <textarea name="justificativa" cols="50" rows="5" > </textarea>
@@ -106,38 +73,22 @@
             </form>
             <%
             } else {
-                if (request.getParameter("tipo").equals("Janta") && countJanta >= 15) {
-            %>
-            <fieldset class="login1">
-                <p style="text-align: center; background-color: #ffcccc; width: 400px">AS VAGAS PARA A JANTA DE HOJE ACABARAM!<br/><br/>
-                    <a class="ap" href="inicio.jsp">Início</a></p>
-            </fieldset>
-            <%
-            } else if (request.getParameter("tipo").equals("Almoço") && countAlmoco >= 20) {
-            %>
-            <fieldset class="login1">
-                <p style="text-align: center; background-color: #ffcccc; width: 400px">AS VAGAS PARA O ALMOÇO DE HOJE ACABARAM!<br/><br/>
-                    <a class="ap" href="inicio.jsp">Início</a></p>
-            </fieldset>
-            <%
-            } else {
                 Refeicao refeicao = new Refeicao();
+
                 refeicao.setMatricula(usuLogado.getString("matricula"));
-                refeicao.setData(data);
+                refeicao.setData(request.getParameter("data"));
                 refeicao.setTipo(request.getParameter("tipo"));
                 refeicao.setJustificativa(request.getParameter("justificativa"));
+
+                RefeicaoDAO refeicaoDAO = new RefeicaoDAO();
 
                 refeicaoDAO.Inserir(refeicao);
             %>
             <fieldset class="login1">
-                <p style="text-align: center; background-color: #ccffcc; width: 400px">RESERVA FEITA COM SUCESSO.<br/><br/>
+                <p style="text-align: center">AGENDAMENTO FEITO COM SUCESSO.<br/><br/>
                     <a class="ap" href="inicio.jsp">Início</a></p>
             </fieldset>
-            <%
-                        }
-                    }
-                }
-            %>
+            <%}%>
         </div>
         <%
                 }
