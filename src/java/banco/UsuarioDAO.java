@@ -67,13 +67,17 @@ public class UsuarioDAO {
         }
     }
 
-    public void Excluir(String id) throws SQLException {
+    public void excluir(String id){
+        try {
             java.sql.PreparedStatement stmt = conn.prepareStatement("DELETE FROM usuario WHERE idUsuario = " + id + ";");
             stmt.executeUpdate();
             stmt.close();
+    } catch (SQLException ex){
+        throw new RuntimeException (ex);
+    }
     }
 
-    public void Editar(String id, String nome, String curso, String funcao, String tel, String email) throws SQLException {
+    public void editar(String id, String nome, String curso, String funcao, String tel, String email) throws SQLException {
         java.sql.PreparedStatement stmt = conn.prepareStatement("UPDATE usuario SET nome='" + nome + "', curso='" + curso + "',"
                 + " funcao='" + funcao + "', telefone='" + tel + "', email='" + email + "' WHERE idUsuario = " + id + ";");
         stmt.executeUpdate();
