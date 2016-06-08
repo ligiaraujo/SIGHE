@@ -67,7 +67,7 @@ public class UsuarioDAO {
         }
     }
 
-    public void excluir(String id){
+    public boolean excluir(String id){
         try {
             java.sql.PreparedStatement stmt = conn.prepareStatement("DELETE FROM usuario WHERE idUsuario = " + id + ";");
             stmt.executeUpdate();
@@ -75,13 +75,19 @@ public class UsuarioDAO {
     } catch (SQLException ex){
         throw new RuntimeException (ex);
     }
+        return true;
     }
 
-    public void editar(String id, String nome, String curso, String funcao, String tel, String email) throws SQLException {
+    public boolean editar(String id, String nome, String curso, String funcao, String tel, String email) {
+        try {
         java.sql.PreparedStatement stmt = conn.prepareStatement("UPDATE usuario SET nome='" + nome + "', curso='" + curso + "',"
                 + " funcao='" + funcao + "', telefone='" + tel + "', email='" + email + "' WHERE idUsuario = " + id + ";");
         stmt.executeUpdate();
         stmt.close();
+    } catch (SQLException ed){
+        throw new RuntimeException (ed);
+    }
+        return true;
     }
 
     public ResultSet pegarUsuario(String id) throws SQLException {
