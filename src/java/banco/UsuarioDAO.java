@@ -64,14 +64,14 @@ public class UsuarioDAO {
         }
     }
 
-    public boolean excluir(String id){
+    public boolean excluir(String id) {
         try {
             java.sql.PreparedStatement stmt = conn.prepareStatement("DELETE FROM usuario WHERE idUsuario = " + id + ";");
             stmt.executeUpdate();
             stmt.close();
-    } catch (SQLException ex){
-        throw new RuntimeException (ex);
-    }
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
         return true;
     }
 

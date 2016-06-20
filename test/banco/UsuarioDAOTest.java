@@ -104,6 +104,7 @@ public class UsuarioDAOTest {
         String tel = "";
         String email = "";
         UsuarioDAO instance = new UsuarioDAO();
+
         Usuario u = new Usuario();
         u.setNome(nome);
         u.setCurso(curso);
@@ -112,6 +113,7 @@ public class UsuarioDAOTest {
         u.setEmail(email);
         u.setIdUsuario(id);
         instance.editar(u);
+
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
