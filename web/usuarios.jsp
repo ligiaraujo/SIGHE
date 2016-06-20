@@ -210,7 +210,16 @@
             }
 
             UsuarioDAO usuarioDAO2 = new UsuarioDAO();
-            usuarioDAO2.editar(id, n, c, fc, tel, e);
+
+            Usuario u = new Usuario();
+            u.setNome(n);
+            u.setCurso(c);
+            u.setFuncao(fc);
+            u.setTelefone(tel);
+            u.setEmail(e);
+            u.setIdUsuario(id);
+            usuarioDAO2.editar(u);
+
         %>
         <p style="text-align: center">
             <%=opcao.toUpperCase()%> EDITADO COM SUCESSO. <br/><br/>
