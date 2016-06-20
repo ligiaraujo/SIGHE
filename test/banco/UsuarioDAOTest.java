@@ -12,10 +12,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -86,7 +86,7 @@ public class UsuarioDAOTest {
         System.out.println("Excluir");
         String id = "";
         UsuarioDAO instance = new UsuarioDAO();
-        instance.Excluir(id);
+        instance.excluir(id);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -104,7 +104,14 @@ public class UsuarioDAOTest {
         String tel = "";
         String email = "";
         UsuarioDAO instance = new UsuarioDAO();
-        instance.Editar(id, nome, curso, funcao, tel, email);
+        Usuario u = new Usuario();
+        u.setNome(nome);
+        u.setCurso(curso);
+        u.setFuncao(funcao);
+        u.setTelefone(tel);
+        u.setEmail(email);
+        u.setIdUsuario(id);
+        instance.editar(u);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
