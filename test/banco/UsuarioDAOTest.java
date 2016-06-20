@@ -86,7 +86,7 @@ public class UsuarioDAOTest {
         System.out.println("Excluir");
         String id = "";
         UsuarioDAO instance = new UsuarioDAO();
-        instance.Excluir(id);
+        instance.excluir(id);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -104,7 +104,7 @@ public class UsuarioDAOTest {
         String tel = "";
         String email = "";
         UsuarioDAO instance = new UsuarioDAO();
-        instance.Editar(id, nome, curso, funcao, tel, email);
+        instance.editar(id, nome, curso, funcao, tel, email);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
