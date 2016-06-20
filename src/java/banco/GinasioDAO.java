@@ -22,16 +22,16 @@ public class GinasioDAO {
         this.conn = new Banco().getConn();
     }
 
-    public void Inserir(Ginasio cadastrar) throws SQLException {
+    public boolean inserir(Ginasio ginasio) throws SQLException {
         String sql = "insert into ginasio (matricula, tipoEsporte, qtdBolas, horario, data) values (?, ?, ?, ?, ?);";
         int idEsporte = 0;
         try {
             java.sql.PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            stmt.setString(1, cadastrar.getMatricula());
-            stmt.setString(2, cadastrar.getTipoEsporte());
-            stmt.setString(3, cadastrar.getQtdBolas());
-            stmt.setString(4, cadastrar.getHorario());
-            stmt.setString(5, cadastrar.getData());
+            stmt.setString(1, ginasio.getMatricula());
+            stmt.setString(2, ginasio.getTipoEsporte());
+            stmt.setString(3, ginasio.getQtdBolas());
+            stmt.setString(4, ginasio.getHorario());
+            stmt.setString(5, ginasio.getData());
 
             stmt.execute();
             ResultSet rs = stmt.getGeneratedKeys();
@@ -41,8 +41,10 @@ public class GinasioDAO {
             rs.close();
             stmt.close();
             conn.close();
+            return true;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        
     }
 }

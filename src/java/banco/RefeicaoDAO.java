@@ -21,15 +21,15 @@ public class RefeicaoDAO {
         this.conn = new Banco().getConn();
     }
 
-    public void Inserir(Refeicao cadastrar) throws SQLException {
+    public boolean inserir(Refeicao refeicao) throws SQLException {
         String sql = "INSERT INTO refeicao (matricula, tipo, justificativa, data) VALUES (?, ?, ?, ?);";
         int idRefeicao = 0;
         try {
             java.sql.PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            stmt.setString(1, cadastrar.getMatricula());
-            stmt.setString(2, cadastrar.getTipo());
-            stmt.setString(3, cadastrar.getJustificativa());
-            stmt.setString(4, cadastrar.getData());
+            stmt.setString(1, refeicao.getMatricula());
+            stmt.setString(2, refeicao.getTipo());
+            stmt.setString(3, refeicao.getJustificativa());
+            stmt.setString(4, refeicao.getData());
             
             stmt.execute();
             ResultSet rs = stmt.getGeneratedKeys();
@@ -40,9 +40,11 @@ public class RefeicaoDAO {
             rs.close();
             stmt.close();
             conn.close();
+            return true;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        
     }
 }
  

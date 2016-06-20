@@ -21,15 +21,15 @@ public class ConsultaDAO {
         this.conn = new Banco().getConn();
     }
 
-    public void Inserir(Consulta cadastrar) throws SQLException {
+    public boolean inserir(Consulta consulta) throws SQLException {
         String sql = "INSERT INTO consulta (matricula, medico, hora, data) VALUES (?, ?, ?, ?);";
         int idCons = 0;
         try {
             java.sql.PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            stmt.setString(1, cadastrar.getMatricula());
-            stmt.setString(2, cadastrar.getMedico());
-            stmt.setString(3, cadastrar.getHora());
-            stmt.setString(4, cadastrar.getData());
+            stmt.setString(1, consulta.getMatricula());
+            stmt.setString(2, consulta.getMedico());
+            stmt.setString(3, consulta.getHora());
+            stmt.setString(4, consulta.getData());
             stmt.execute();
             ResultSet rs = stmt.getGeneratedKeys();
             rs.next();
@@ -38,9 +38,11 @@ public class ConsultaDAO {
             rs.close();
             stmt.close();
             conn.close();
+            return true;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        
     }
 }
 
