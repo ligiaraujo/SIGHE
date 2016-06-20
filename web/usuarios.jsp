@@ -172,9 +172,9 @@
             }
 
             UsuarioDAO usuarioDAO2 = new UsuarioDAO();
-            String resultCadastro = usuarioDAO2.Inserir(usuario);
+            boolean resultCadastro = usuarioDAO2.inserir(usuario);
 
-            if (resultCadastro.equals("matricula ja cadastrada")) {
+            if (!resultCadastro) {
         %>
         <p style="text-align: center">
             DESCULPE, MATRÍCULA JÁ CADASTRADA. <br/><br/>
@@ -210,7 +210,14 @@
             }
 
             UsuarioDAO usuarioDAO2 = new UsuarioDAO();
-            usuarioDAO2.Editar(id, n, c, fc, tel, e);
+            Usuario u = new Usuario();
+            u.setNome(n);
+            u.setCurso(c);
+            u.setFuncao(fc);
+            u.setTelefone(tel);
+            u.setEmail(e);
+            u.setIdUsuario(id);
+            usuarioDAO2.editar(u);
         %>
         <p style="text-align: center">
             <%=opcao.toUpperCase()%> EDITADO COM SUCESSO. <br/><br/>
@@ -223,7 +230,7 @@
         <%} else if (acao.equals("Excluir")) {
             String id = request.getParameter("id");
             UsuarioDAO usuarioDAO2 = new UsuarioDAO();
-            usuarioDAO2.Excluir(id);
+            usuarioDAO2.excluir(id);
         %>
         <p style="text-align: center">
             <%=opcao.toUpperCase()%> EXCLUÍDO COM SUCESSO. <br/><br/>

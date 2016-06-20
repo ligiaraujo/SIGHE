@@ -48,7 +48,7 @@ public class UsuarioDAO {
         stmt.close();
         conn.close();
     }
-    
+   
     public boolean inserir(Usuario usuario) {
         try {
             java.sql.PreparedStatement stmt1 = conn.prepareStatement("SELECT 1 FROM usuario WHERE matricula=" + usuario.getMatricula() + ";");
@@ -75,12 +75,21 @@ public class UsuarioDAO {
         return true;
     }
 
-    public boolean editar(String id, String nome, String curso, String funcao, String tel, String email) {
+    public boolean editar(Usuario usuario) {
         try {
-        java.sql.PreparedStatement stmt = conn.prepareStatement("UPDATE usuario SET nome='" + nome + "', curso='" + curso + "',"
-                + " funcao='" + funcao + "', telefone='" + tel + "', email='" + email + "' WHERE idUsuario = " + id + ";");
-        stmt.executeUpdate();
+        String sql = "UPDATE usuario SET nome = ?, curso = ?, funcao = ?, telefone = ?, email = ?" 
+                      +" WHERE idUsuario = ?;";
+        java.sql.PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        
+        stmt.setString(1, usuario.getNome());
+        stmt.setString(2, usuario.getCurso());
+        stmt.setString(3, usuario.getFuncao());
+        stmt.setString(4, usuario.getTelefone());
+        stmt.setString(5, usuario.getEmail());
+        stmt.setString(6, usuario.getIdUsuario());
+        stmt.execute();                            
         stmt.close();
+        
     } catch (SQLException ed){
         throw new RuntimeException (ed);
     }
