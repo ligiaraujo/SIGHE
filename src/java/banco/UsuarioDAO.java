@@ -60,7 +60,9 @@ public class UsuarioDAO {
                 return true;
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Exceção de banco de dados:", e);
+        }catch(Exception e){
+            throw new RuntimeException("Exceção inesperada:", e);
         }
     }
 
@@ -96,12 +98,28 @@ public class UsuarioDAO {
         return true;
     }
 
-    public ResultSet pegarUsuario(String id) throws SQLException {
-        java.sql.PreparedStatement stmt = conn.prepareStatement("SELECT * FROM usuario WHERE idUsuario=" + id + ";");
-        ResultSet rs = stmt.executeQuery();
-        return rs;
+    public Usuario pegarUsuario(String id) {    
+        try {
+            Usuario usuario = null;
+            java.sql.PreparedStatement stmt = conn.prepareStatement("SELECT * FROM usuario WHERE idUsuario=" + id + ";");
+            ResultSet rs = stmt.executeQuery();
+            
+            if (rs.next()){
+               usuario = new Usuario();
+               usuario.setIdUsuario(rs.getString("id"));
+               // outros campos....
+            }
+            
+            return usuario;
+        } catch (SQLException ex) {
+           throw new RuntimeException (ex);
+        }
     }
 
+    public Usuario pegarUsuarioPelaMatricula(String matricula){
+        return new Usuario();
+    }
+    
     public ResultSet selecionarAlunos() throws SQLException {
         java.sql.PreparedStatement stmt = conn.prepareStatement("SELECT * FROM usuario WHERE tipo = 'Aluno';");
         ResultSet rs = stmt.executeQuery();
