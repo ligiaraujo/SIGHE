@@ -51,7 +51,8 @@ public class UsuarioDAO {
    
     public boolean inserir(Usuario usuario) {
         try {
-            java.sql.PreparedStatement stmt1 = conn.prepareStatement("SELECT 1 FROM usuario WHERE matricula=" + usuario.getMatricula() + ";");
+            java.sql.PreparedStatement stmt1 = conn.prepareStatement("SELECT 1 FROM usuario WHERE matricula=" 
+                    + usuario.getMatricula() + ";");
             ResultSet rs1 = stmt1.executeQuery();
             if (rs1.next()) {
                 return false;
@@ -96,10 +97,15 @@ public class UsuarioDAO {
         return true;
     }
 
-    public ResultSet pegarUsuario(String id) throws SQLException {
+    public boolean pegarUsuario(String id) {
+        try {
         java.sql.PreparedStatement stmt = conn.prepareStatement("SELECT * FROM usuario WHERE idUsuario=" + id + ";");
         ResultSet rs = stmt.executeQuery();
-        return rs;
+        } catch (SQLException pu){
+        throw new RuntimeException (pu);
+    }
+        return true;
+    
     }
 
     public ResultSet selecionarAlunos() throws SQLException {

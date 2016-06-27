@@ -124,14 +124,21 @@ public class UsuarioDAOTest {
     @Test
     public void testPegarUsuario() throws Exception {
         System.out.println("pegarUsuario");
+        System.out.println("pegarUsuario");
         String id = "";
         UsuarioDAO instance = new UsuarioDAO();
+        instance.pegarUsuario(id);
         ResultSet expResult = null;
-        ResultSet result = instance.pegarUsuario(id);
+        ResultSet = instance.pegarUsuario(id);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
+        
+        
+        
     }
+        
+     
 
     /**
      * Test of selecionarAlunos method, of class UsuarioDAO.
