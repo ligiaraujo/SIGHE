@@ -23,7 +23,10 @@ import org.junit.Test;
  */
 public class UsuarioDAOTest {
     
+    private Usuario usuario;
+    
     public UsuarioDAOTest() {
+    
     }
     
     @BeforeClass
@@ -37,12 +40,20 @@ public class UsuarioDAOTest {
     @Before
     public void setUp() {
         System.out.println("setUp UsuarioTestDAO");
+        
+        usuario = new Usuario();
+        usuario.setMatricula("1234");
+        
+        
         try {
             Connection conn = new Banco().getConn();
             String sql = "DELETE FROM usuario WHERE matricula = 1234";
             java.sql.PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.executeUpdate();
             stmt.close();
+            
+            // inserir registro pra usar no testExcluir
+            
         } catch (SQLException ex) {
             System.out.println("erro na exclusao");
             Logger.getLogger(UsuarioDAOTest.class.getName()).log(Level.SEVERE, null, ex);
@@ -59,9 +70,6 @@ public class UsuarioDAOTest {
     @Test
     public void testInserir() {
         System.out.println("inserir");
-        
-        Usuario usuario = new Usuario();
-        usuario.setMatricula("1234");
         
         UsuarioDAO instance = null;
         
@@ -123,7 +131,9 @@ public class UsuarioDAOTest {
      */
     @Test
     public void testPegarUsuario() throws Exception {
+        
         System.out.println("pegarUsuario");
+<<<<<<< HEAD
         System.out.println("pegarUsuario");
         String id = "";
         UsuarioDAO instance = new UsuarioDAO();
@@ -136,10 +146,37 @@ public class UsuarioDAOTest {
         
         
         
+=======
+        
+        UsuarioDAO instance = new UsuarioDAO();
+        instance.inserir(usuario);
+        
+        instance = new UsuarioDAO();
+        Usuario result = instance.pegarUsuario(usuario.getIdUsuario());
+        assertEquals(usuario, result);
+>>>>>>> 21031fcc140f71b445b5ce80bca52c93026959f2
     }
         
      
 
+    /**
+     * Test of pegarUsuario method, of class UsuarioDAO.
+     */
+    @Test
+    public void testPegarUsuarioPelaMatricula() throws Exception {
+        UsuarioDAO instance = new UsuarioDAO();
+        instance.inserir(usuario);
+        
+        instance = new UsuarioDAO();
+        Usuario result = instance.pegarUsuarioPelaMatricula(usuario.getMatricula());
+        assertNotNull(result);
+        
+        assertTrue(result.equals(usuario));
+        assertTrue(result.getMatricula().equals(usuario.getMatricula()));
+        assertTrue(result.getIdUsuario().equals(usuario.getIdUsuario()));
+        
+    }
+    
     /**
      * Test of selecionarAlunos method, of class UsuarioDAO.
      */

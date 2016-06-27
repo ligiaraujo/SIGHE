@@ -9,9 +9,7 @@ package banco;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 /**
  *
@@ -44,12 +42,19 @@ public class Banco {
             Class.forName(driver);
             conn = (Connection) DriverManager.getConnection(url, user, pass);
             stmt = (Statement) conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            System.out.println("Conexao feita com sucesso!!!!");
         } catch (Exception e) {
             System.out.println("Erro: " + e.getMessage());
         }
     }
 
     public Connection getConn() {
+        if (conn==null){
+            System.out.println("conn é nulo");
+        }else{
+            System.out.println("conn NAO é nulo");
+        }
+        
         return conn;
     }
 }
