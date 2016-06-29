@@ -5,6 +5,8 @@
  */
 package banco;
 
+import static com.sun.xml.bind.v2.schemagen.Util.equal;
+
 /**
  *
  * @author Wisley
@@ -134,4 +136,26 @@ public class Usuario {
     private String sexo;
     private String curso;
     private String funcao;
+    
+    public boolean equals(Usuario usuario) {
+        if (this == usuario) {
+            return true;
+        }
+
+        if (usuario instanceof Usuario) {
+            Usuario that = (Usuario) usuario;
+            return equal(this.tipo, that.tipo)
+                    && equal(this.senha, that.senha)
+                    && equal(this.nome, that.nome)
+                    && equal(this.dataNasc, that.dataNasc)
+                    && equal(this.email, that.email)
+                    && equal(this.telefone, that.telefone)
+                    && equal(this.cpf, that.cpf)
+                    && equal(this.sexo, that.sexo)
+                    && equal(this.curso, that.curso)
+                    && equal(this.funcao, that.funcao);
+        }
+        return false;
+    }
+
 }
