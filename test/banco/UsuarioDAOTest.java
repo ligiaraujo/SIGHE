@@ -24,7 +24,6 @@ import org.junit.Test;
 public class UsuarioDAOTest {
     
     private Usuario usuario;
-
     
     public UsuarioDAOTest() {
     
@@ -93,10 +92,11 @@ public class UsuarioDAOTest {
     @Test
     public void testExcluir() throws Exception {
         System.out.println("Excluir");
-        String matricula = "";
+        String id = "";
         UsuarioDAO instance = new UsuarioDAO();
-        instance.excluir(matricula);
+        instance.excluir(id);
         // TODO review the generated test code and remove the default call to fail.
+        //anbusb
         fail("The test case is a prototype.");
     }
 
