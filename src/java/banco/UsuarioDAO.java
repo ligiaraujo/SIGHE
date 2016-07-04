@@ -67,9 +67,9 @@ public class UsuarioDAO {
         }
     }
 
-    public boolean excluir(String id) {
+    public boolean excluir(String matricula) {
         try {
-            java.sql.PreparedStatement stmt = conn.prepareStatement("DELETE FROM usuario WHERE idUsuario = " + id + ";");
+            java.sql.PreparedStatement stmt = conn.prepareStatement("DELETE FROM usuario WHERE Matricula = " + matricula + ";");
             stmt.executeUpdate();
             stmt.close();
         } catch (SQLException ex) {
@@ -99,17 +99,7 @@ public class UsuarioDAO {
         return true;
     }
 
-<<<<<<< HEAD
-    public boolean pegarUsuario(String id) {
-        try {
-        java.sql.PreparedStatement stmt = conn.prepareStatement("SELECT * FROM usuario WHERE idUsuario=" + id + ";");
-        ResultSet rs = stmt.executeQuery();
-        } catch (SQLException pu){
-        throw new RuntimeException (pu);
-    }
-        return true;
-    
-=======
+
     public Usuario pegarUsuario(String id) {    
         try {
             Usuario usuario = null;
@@ -126,11 +116,79 @@ public class UsuarioDAO {
         } catch (SQLException ex) {
            throw new RuntimeException (ex);
         }
->>>>>>> 21031fcc140f71b445b5ce80bca52c93026959f2
     }
 
     public Usuario pegarUsuarioPelaMatricula(String matricula){
-        return new Usuario();
+        try {
+            Usuario usuario = null;
+            java.sql.PreparedStatement stmt = conn.prepareStatement("SELECT * FROM usuario WHERE Matricula=" + matricula + ";");
+            ResultSet rs = stmt.executeQuery();
+            
+            if (rs.next()){
+               usuario = new Usuario();
+               usuario.setMatricula(rs.getString("matricula"));
+               // outros campos....
+            }
+            if (rs.next()){
+               usuario = new Usuario();
+               usuario.setIdUsuario(rs.getString("id"));
+               // outros campos....
+            }
+            if (rs.next()){
+               usuario = new Usuario();
+               usuario.setNome(rs.getString("nome"));
+               // outros campos....
+            }
+            if (rs.next()){
+               usuario = new Usuario();
+               usuario.setSenha(rs.getString("senha"));
+               // outros campos....
+            }
+            if (rs.next()){
+               usuario = new Usuario();
+               usuario.setTipo(rs.getString("tipo"));
+               // outros campos....
+            }
+            if (rs.next()){
+               usuario = new Usuario();
+               usuario.setDataNasc(rs.getString("data nascimento"));
+               // outros campos....
+            }
+            if (rs.next()){
+               usuario = new Usuario();
+               usuario.setCpf(rs.getString("cpf"));
+               // outros campos....
+            }
+            if (rs.next()){
+               usuario = new Usuario();
+               usuario.setCurso(rs.getString("curso"));
+               // outros campos....
+            }
+            if (rs.next()){
+               usuario = new Usuario();
+               usuario.setFuncao(rs.getString("função"));
+               // outros campos....
+            }
+            if (rs.next()){
+               usuario = new Usuario();
+               usuario.setSexo(rs.getString("sexo"));
+               // outros campos....
+            }
+            if (rs.next()){
+               usuario = new Usuario();
+               usuario.setTelefone(rs.getString("telefone"));
+               // outros campos....
+            }
+            if (rs.next()){
+               usuario = new Usuario();
+               usuario.setEmail(rs.getString("email"));
+               // outros campos....
+            }
+            
+            return usuario;
+        } catch (SQLException ex) {
+           throw new RuntimeException (ex);
+        }
     }
     
     public ResultSet selecionarAlunos() throws SQLException {
