@@ -6,7 +6,6 @@
 package banco;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -23,63 +22,175 @@ public class UsuarioDAO {
         this.conn = new Banco().getConn();
     }
 
-    public String Inserir(Usuario cadastrar) throws SQLException {  //verificar se matricula ja está cadastrada
-        java.sql.PreparedStatement stmt1 = conn.prepareStatement("SELECT * FROM usuario WHERE matricula=" + cadastrar.getMatricula() + ";");
-        ResultSet rs1 = stmt1.executeQuery();
-        if (rs1.next()) {
-            return "matricula ja cadastrada";
-        } else {                               //Preparando o script de Inserção
-
-            String sql = "INSERT INTO usuario (tipo, senha, nome, matricula, dataNasc, email, telefone, cpf, sexo, curso, funcao) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-            int idUsuario = 0;
-            try {
-                java.sql.PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-                stmt.setString(1, cadastrar.getTipo());
-                stmt.setString(2, cadastrar.getSenha());
-                stmt.setString(3, cadastrar.getNome());
-                stmt.setString(4, cadastrar.getMatricula());
-                stmt.setString(5, cadastrar.getDataNasc());
-                stmt.setString(6, cadastrar.getEmail());
-                stmt.setString(7, cadastrar.getTelefone());
-                stmt.setString(8, cadastrar.getCpf());
-                stmt.setString(9, cadastrar.getSexo());
-                stmt.setString(10, cadastrar.getCurso());
-                stmt.setString(11, cadastrar.getFuncao());
-                stmt.execute();                             //Executando o script de Inserção
-                ResultSet rs = stmt.getGeneratedKeys();
-                rs.next();
-                idUsuario = rs.getInt(1);       
-                rs.close();
-                stmt.close();
-                conn.close();
-                //return cadastrar;
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+    private void inserirAux(Usuario usuario) throws SQLException{
+        String sql = "INSERT INTO usuario (tipo, senha, nome, matricula, " + 
+                                            "dataNasc, email, telefone, cpf, " + 
+                                            "sexo, curso, funcao) "
+                                    + "VALUES (?, ?, ?, ?, " + 
+                                                "?, ?, ?, ?, " + 
+                                                "?, ?, ?);";
+        java.sql.PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        stmt.setString(1, usuario.getTipo());
+        stmt.setString(2, usuario.getSenha());
+        stmt.setString(3, usuario.getNome());
+        stmt.setString(4, usuario.getMatricula());
+        stmt.setString(5, usuario.getDataNasc());
+        stmt.setString(6, usuario.getEmail());
+        stmt.setString(7, usuario.getTelefone());
+        stmt.setString(8, usuario.getCpf());
+        stmt.setString(9, usuario.getSexo());
+        stmt.setString(10, usuario.getCurso());
+        stmt.setString(11, usuario.getFuncao());
+        stmt.execute();                            
+        ResultSet rs = stmt.getGeneratedKeys();
+        rs.next();
+        rs.close();
+        stmt.close();
+        conn.close();
+    }
+   
+    public boolean inserir(Usuario usuario) {
+        try {
+            java.sql.PreparedStatement stmt1 = conn.prepareStatement("SELECT 1 FROM usuario WHERE matricula=" 
+                    + usuario.getMatricula() + ";");
+            ResultSet rs1 = stmt1.executeQuery();
+            if (rs1.next()) {
+                return false;
+            } else {
+                inserirAux(usuario);
+                return true;
             }
-            return "cadastro feito";
+        } catch (SQLException e) {
+            throw new RuntimeException("Exceção de banco de dados:", e);
+        }catch(Exception e){
+            throw new RuntimeException("Exceção inesperada:", e);
         }
-    } // Fim do método de Inserção
+    }
 
-    public void Excluir(String id) throws SQLException {
-        java.sql.PreparedStatement stmt = conn.prepareStatement("DELETE FROM usuario WHERE idUsuario = " + id + ";");
-        stmt.executeUpdate();
+    public boolean excluir(String matricula) {
+        try {
+            java.sql.PreparedStatement stmt = conn.prepareStatement("DELETE FROM usuario WHERE Matricula = " + matricula + ";");
+            stmt.executeUpdate();
+            stmt.close();
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+        return true;
+    }
+
+    public boolean editar(Usuario usuario) {
+        try {
+        String sql = "UPDATE usuario SET nome = ?, curso = ?, funcao = ?, telefone = ?, email = ?" 
+                      +" WHERE idUsuario = ?;";
+        java.sql.PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        
+        stmt.setString(1, usuario.getNome());
+        stmt.setString(2, usuario.getCurso());
+        stmt.setString(3, usuario.getFuncao());
+        stmt.setString(4, usuario.getTelefone());
+        stmt.setString(5, usuario.getEmail());
+        stmt.setString(6, usuario.getIdUsuario());
+        stmt.execute();                            
         stmt.close();
+        
+    } catch (SQLException ed){
+        throw new RuntimeException (ed);
+    }
+        return true;
     }
 
-    public void Editar(String id, String nome, String curso, String funcao, String tel, String email) throws SQLException {
-        java.sql.PreparedStatement stmt = conn.prepareStatement("UPDATE usuario SET nome='" + nome + "', curso='" + curso + "',"
-                + " funcao='" + funcao + "', telefone='" + tel + "', email='" + email + "' WHERE idUsuario = " + id + ";");
-        stmt.executeUpdate();
-        stmt.close();
+
+    public Usuario pegarUsuario(String id) {    
+        try {
+            Usuario usuario = null;
+            java.sql.PreparedStatement stmt = conn.prepareStatement("SELECT * FROM usuario WHERE idUsuario=" + id + ";");
+            ResultSet rs = stmt.executeQuery();
+            
+            if (rs.next()){
+               usuario = new Usuario();
+               usuario.setIdUsuario(rs.getString("id"));
+               // outros campos....
+            }
+            
+            return usuario;
+        } catch (SQLException ex) {
+           throw new RuntimeException (ex);
+        }
     }
 
-    public ResultSet pegarUsuario(String id) throws SQLException {
-        java.sql.PreparedStatement stmt = conn.prepareStatement("SELECT * FROM usuario WHERE idUsuario=" + id + ";");
-        ResultSet rs = stmt.executeQuery();
-        return rs;
+    public Usuario pegarUsuarioPelaMatricula(String matricula){
+        try {
+            Usuario usuario = null;
+            java.sql.PreparedStatement stmt = conn.prepareStatement("SELECT * FROM usuario WHERE Matricula=" + matricula + ";");
+            ResultSet rs = stmt.executeQuery();
+            
+            if (rs.next()){
+               usuario = new Usuario();
+               usuario.setMatricula(rs.getString("matricula"));
+               // outros campos....
+            }
+            if (rs.next()){
+               usuario = new Usuario();
+               usuario.setIdUsuario(rs.getString("id"));
+               // outros campos....
+            }
+            if (rs.next()){
+               usuario = new Usuario();
+               usuario.setNome(rs.getString("nome"));
+               // outros campos....
+            }
+            if (rs.next()){
+               usuario = new Usuario();
+               usuario.setSenha(rs.getString("senha"));
+               // outros campos....
+            }
+            if (rs.next()){
+               usuario = new Usuario();
+               usuario.setTipo(rs.getString("tipo"));
+               // outros campos....
+            }
+            if (rs.next()){
+               usuario = new Usuario();
+               usuario.setDataNasc(rs.getString("data nascimento"));
+               // outros campos....
+            }
+            if (rs.next()){
+               usuario = new Usuario();
+               usuario.setCpf(rs.getString("cpf"));
+               // outros campos....
+            }
+            if (rs.next()){
+               usuario = new Usuario();
+               usuario.setCurso(rs.getString("curso"));
+               // outros campos....
+            }
+            if (rs.next()){
+               usuario = new Usuario();
+               usuario.setFuncao(rs.getString("função"));
+               // outros campos....
+            }
+            if (rs.next()){
+               usuario = new Usuario();
+               usuario.setSexo(rs.getString("sexo"));
+               // outros campos....
+            }
+            if (rs.next()){
+               usuario = new Usuario();
+               usuario.setTelefone(rs.getString("telefone"));
+               // outros campos....
+            }
+            if (rs.next()){
+               usuario = new Usuario();
+               usuario.setEmail(rs.getString("email"));
+               // outros campos....
+            }
+            
+            return usuario;
+        } catch (SQLException ex) {
+           throw new RuntimeException (ex);
+        }
     }
-
+    
     public ResultSet selecionarAlunos() throws SQLException {
         java.sql.PreparedStatement stmt = conn.prepareStatement("SELECT * FROM usuario WHERE tipo = 'Aluno';");
         ResultSet rs = stmt.executeQuery();
