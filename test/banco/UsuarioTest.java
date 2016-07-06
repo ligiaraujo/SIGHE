@@ -8,6 +8,7 @@ package banco;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -368,13 +369,41 @@ public class UsuarioTest {
     @Test
     public void testEquals() {
         System.out.println("equals");
-        Usuario usuario = null;
+        
+        /* Testando usuarios diferentes
+       Usuario usuario = null;
+       Usuario instance = new Usuario();
+       boolean expResult = false;
+       boolean result = instance.equals(usuario);
+       assertEquals(expResult, result);*/
+        
+        // testando usuarios iguais
+        String id = "654";
+        String nome = "ze maria";
+        String curso = "TI";
+        String funcao = "estagiario";
+        String tel = "76545-097";
+        String email = "zrgoinha@rer.fof.bt";
+        
+        Usuario usuario = new Usuario();
+        usuario.setNome(nome);
+        usuario.setCurso(curso);
+        usuario.setFuncao(funcao);
+        usuario.setTelefone(tel);
+        usuario.setEmail(email);
+        usuario.setIdUsuario(id);
+        
         Usuario instance = new Usuario();
-        boolean expResult = false;
-        boolean result = instance.equals(usuario);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        instance.setNome(nome);
+        instance.setCurso(curso);
+        instance.setFuncao(funcao);
+        instance.setTelefone(tel);
+        instance.setEmail(email);
+        instance.setIdUsuario(id);
+
+        assertTrue(instance.equals(usuario));
+        
+        
     }
     
 }
