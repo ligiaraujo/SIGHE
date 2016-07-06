@@ -370,12 +370,12 @@ public class UsuarioTest {
     public void testEquals() {
         System.out.println("equals");
         
-        /* Testando usuarios diferentes
+       //Testando usuarios diferentes
        Usuario usuario = null;
        Usuario instance = new Usuario();
        boolean expResult = false;
        boolean result = instance.equals(usuario);
-       assertEquals(expResult, result);*/
+       assertEquals(expResult, result);
         
         // testando usuarios iguais
         String id = "654";
@@ -385,15 +385,14 @@ public class UsuarioTest {
         String tel = "76545-097";
         String email = "zrgoinha@rer.fof.bt";
         
-        Usuario usuario = new Usuario();
-        usuario.setNome(nome);
-        usuario.setCurso(curso);
-        usuario.setFuncao(funcao);
-        usuario.setTelefone(tel);
-        usuario.setEmail(email);
-        usuario.setIdUsuario(id);
-        
-        Usuario instance = new Usuario();
+        Usuario user = new Usuario();
+        user.setNome(nome);
+        user.setCurso(curso);
+        user.setFuncao(funcao);
+        user.setTelefone(tel);
+        user.setEmail(email);
+        user.setIdUsuario(id);
+
         instance.setNome(nome);
         instance.setCurso(curso);
         instance.setFuncao(funcao);
@@ -401,7 +400,7 @@ public class UsuarioTest {
         instance.setEmail(email);
         instance.setIdUsuario(id);
 
-        assertTrue(instance.equals(usuario));
+        assertTrue(instance.equals(user));
         
         
     }

@@ -92,12 +92,12 @@ public class UsuarioDAOTest {
     @Test
     public void testExcluir() throws Exception {
         System.out.println("Excluir");
-        String id = "";
+        String matricula = "1234";
         UsuarioDAO instance = new UsuarioDAO();
-        instance.excluir(id);
+        instance.excluir(matricula);
         // TODO review the generated test code and remove the default call to fail.
         //anbusb
-        fail("The test case is a prototype.");
+        
     }
 
     /**
@@ -124,7 +124,7 @@ public class UsuarioDAOTest {
         instance.editar(u);
 
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+      
     }
 
     /**
